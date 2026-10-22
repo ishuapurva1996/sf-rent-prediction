@@ -1,0 +1,114 @@
+{
+  "run_timestamp_utc": "2026-10-22T22:41:43.838347+00:00",
+  "run_type": "Decision-tree rent-band midpoint evaluation with a fixed spatial holdout.",
+  "source": "sf_rent_cleaned.csv",
+  "source_sha256": "fd355af3485a18ddf9a410d5a90412ba129a41b002e211ec487ed76bc17d6464",
+  "source_rows": 551551,
+  "eligible_rows": 477394,
+  "exclusions": {
+    "missing_or_open_ended_target": 70562,
+    "nonpositive_target_with_known_midpoint": 3595,
+    "invalid_or_missing_bounds": 0,
+    "missing_block_for_otherwise_valid_target": 0
+  },
+  "target": "Monthly rent-band midpoint in USD, estimated from reported ranges rather than exact lease payments.",
+  "features": [
+    "bedroom_numeric",
+    "bathroom_numeric",
+    "square_footage_midpoint",
+    "property_age",
+    "unit_count",
+    "submission_year",
+    "latitude",
+    "longitude",
+    "analysis_neighborhood",
+    "supervisor_district",
+    "case_type_name",
+    "occupancy_type",
+    "base_rent_includes_water_sewer",
+    "base_rent_includes_natural_gas",
+    "base_rent_includes_electricity",
+    "base_rent_includes_refuse_recycling",
+    "base_rent_includes_other_utilities"
+  ],
+  "excluded_predictors": [
+    "unique_id",
+    "block_num",
+    "monthly_rent",
+    "lower_bound_monthly_rent",
+    "upper_bound_monthly_rent",
+    "monthly_rent_midpoint"
+  ],
+  "split": {
+    "method": "GroupShuffleSplit by city block (block_num)",
+    "test_size_in_groups": 0.2,
+    "random_state": 42,
+    "train_rows": 382459,
+    "test_rows": 94935,
+    "train_blocks": 3067,
+    "test_blocks": 767,
+    "overlapping_blocks": 0,
+    "train_submission_years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "test_submission_years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ]
+  },
+  "model": {
+    "class": "DecisionTreeRegressor",
+    "max_depth": 12,
+    "min_samples_leaf": 100,
+    "random_state": 42,
+    "criterion": "squared_error",
+    "tuning": "None; configuration fixed before holdout evaluation."
+  },
+  "preprocessing": "Numeric median imputation and missing indicators; categorical Missing imputation and one-hot encoding. All fitted on training rows only.",
+  "heldout_metrics": {
+    "mae_usd": 640.1767419825238,
+    "rmse_usd": 846.9104632860451,
+    "r2": 0.500511320610241
+  },
+  "training_metrics": {
+    "mae_usd": 557.6937082233295,
+    "rmse_usd": 756.2892189899246,
+    "r2": 0.6142645955015836
+  },
+  "median_baseline_heldout_metrics": {
+    "mae_usd": 940.3407858008111,
+    "rmse_usd": 1202.0338358864947,
+    "r2": -0.00619936336098359
+  },
+  "mae_improvement_over_median_baseline_percent": 31.920772591253943,
+  "verification": {
+    "no_rent_derived_predictors": true,
+    "target_matches_range_midpoint": true,
+    "disjoint_city_blocks": true,
+    "disjoint_source_rows": true,
+    "manual_metrics_agree": true,
+    "finite_predictions": true,
+    "source_unchanged": true,
+    "saved_model_predictions_identical": true
+  },
+  "limits": [
+    "Targets are reported rent-band midpoints; missing/open-ended bands and zero-rent records are excluded.",
+    "The holdout covers unseen city blocks within the observed 2022-2026 data; it does not measure future-year forecasting or current market-rent prediction.",
+    "No test-set tuning was performed."
+  ],
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scipy": "1.16.2",
+    "scikit_learn": "1.7.2",
+    "joblib": "1.5.2"
+  }
+}
