@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.DS_Store
+data/
+artifacts/
+*.joblib
+*.npz
+sf_rent_cleaned.csv
+Rent_Board_Housing_Inventory_*.csv
